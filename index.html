@@ -1,0 +1,243 @@
+<!-- https://se.ifmo.ru/~s502785/index.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторная работа №1 — Вариант 12727</title>
+    <style>
+        /* Шрифт и базовый цвет задаются один раз на body
+           и наследуются всеми потомками. */
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+          color: #222222;
+          background: #f5f6f8;
+          margin: 0;
+          padding: 20px;
+        }
+
+        /* Блок шапки страницы */
+        #header {
+          background: #ffffff;
+          border: 1px solid #d0d3d8;
+          border-radius: 4px;
+          padding: 14px 18px;
+          margin-bottom: 16px;
+          /* Заданный serif-шрифт, цвет и размер в шапке */
+          font-family: Georgia, 'Times New Roman', serif;
+          color: #1a3a5c;
+          font-size: 16px;
+        }
+
+        /* Селектор дочерних элементов (строки шапки) */
+        #header > .header-row {
+          margin: 2px 0;
+        }
+
+        /* Маркер перед элементами шапки (для красоты) */
+        #header > .header-row::before {
+          content: "— ";
+          color: #8a94a3;
+        }
+
+        h1 {
+          font-family: Georgia, 'Times New Roman', serif;
+          font-size: 20px;
+          margin: 0 0 10px 0;
+        }
+
+        /* Табличная верстка страницы */
+        #layout {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        #layout > tbody > tr > td {
+          vertical-align: top;
+          padding: 10px;
+        }
+
+        .panel {
+          background: #ffffff;
+          border: 1px solid #d0d3d8;
+          border-radius: 4px;
+          padding: 14px;
+        }
+
+        canvas {
+          border: 1px solid #b8bec7;
+          background: #ffffff;
+          display: block;
+        }
+
+        .field-row {
+          margin: 8px 0;
+        }
+        .field-row > label {
+          display: inline-block;
+          width: 130px;
+          font-weight: bold;
+        }
+
+        /* Отступы полей ввода в пикселях */
+        input[type="text"], select {
+          padding: 6px 8px;
+          margin: 2px 4px;
+          border: 1px solid #9aa2ad;
+          border-radius: 3px;
+          font-size: 14px;
+        }
+
+        .radio-group label {
+          margin-right: 12px;
+          font-weight: normal;
+        }
+
+        /* Класс, подсвечивающий некорректное поле */
+        .invalid {
+          border-color: #c0392b !important;
+          background: #fdecea;
+        }
+
+        .error-text {
+          color: #c0392b;
+          font-size: 12px;
+          min-height: 16px;
+          margin-left: 134px;
+        }
+
+        button {
+          margin-top: 10px;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 3px;
+          background: #1a5c8a;
+          color: #ffffff;
+          font-size: 14px;
+          cursor: pointer;
+        }
+        button:hover {
+          background: #134767;
+        }
+
+        /* Таблица результатов */
+        #results-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 14px;
+          font-size: 13px;
+        }
+        #results-table th, #results-table td {
+          border: 1px solid #d0d3d8;
+          padding: 6px 8px;
+          text-align: center;
+        }
+        #results-table th {
+          background: #eef1f5;
+        }
+        /* Чередование строк */
+        #results-table > tbody > tr:nth-child(even) {
+          background: #f7f9fb;
+        }
+
+        .hit-yes {
+          color: #1e7e34;
+          font-weight: bold;
+        }
+        .hit-no {
+          color: #c0392b;
+          font-weight: bold;
+        }
+
+        .section-title {
+          font-family: Georgia, 'Times New Roman', serif;
+          font-size: 15px;
+          margin: 0 0 10px 0;
+          color: #1a3a5c;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Шапка страницы: ФИО, группа, вариант -->
+<div id="header">
+    <h1>Лабораторная работа №1</h1>
+    <div class="header-row">Студент: Кадилова Елена Владимировна</div>
+    <div class="header-row">Группа: Веб-пр (P3215) 1.10</div>
+    <div class="header-row">Вариант: 12727</div>
+</div>
+
+<!-- Табличная верстка основного содержимого -->
+<table id="layout">
+    <tbody>
+    <tr>
+        <td style="width:420px;">
+            <div class="panel">
+                <p class="section-title">Область (вариант 12727)</p>
+                <canvas id="plane" width="400" height="400"></canvas>
+            </div>
+        </td>
+        <td>
+            <div class="panel">
+                <p class="section-title">Проверка точки</p>
+                <form id="point-form" novalidate>
+                    <div class="field-row">
+                        <label for="x-input">X (от -3 до 3):</label>
+                        <input type="text" id="x-input" name="x" placeholder="например, 1.5">
+                    </div>
+                    <div class="error-text" id="x-error"></div>
+
+                    <div class="field-row">
+                        <label for="y-input">Y:</label>
+                        <select id="y-input" name="y">
+                            <option value="-4">-4</option>
+                            <option value="-3">-3</option>
+                            <option value="-2">-2</option>
+                            <option value="-1">-1</option>
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="error-text"></div>
+
+                    <div class="field-row">
+                        <label>R:</label>
+                        <span class="radio-group" id="r-input">
+                  <label><input type="radio" name="r" value="1" checked>1</label>
+                  <label><input type="radio" name="r" value="2">2</label>
+                  <label><input type="radio" name="r" value="3">3</label>
+                  <label><input type="radio" name="r" value="4">4</label>
+                  <label><input type="radio" name="r" value="5">5</label>
+                </span>
+                    </div>
+                    <div class="error-text" id="r-error"></div>
+
+                    <button type="submit">Проверить</button>
+                </form>
+            </div>
+
+            <div class="panel" style="margin-top:14px;">
+                <p class="section-title">Результаты проверок</p>
+                <table id="results-table">
+                    <thead>
+                    <tr>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>R</th>
+                        <th>Результат</th>
+                        <th>Дата и время</th>
+                    </tr>
+                    </thead>
+                    <tbody id="results-body">
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="script.js"></script>
+</body>
+</html>
