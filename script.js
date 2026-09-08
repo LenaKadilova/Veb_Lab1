@@ -3,6 +3,8 @@
 
   const STORAGE_KEY = 'lab1_variant12727_results';
 
+  Decimal.set({ precision: 100 });
+
   const canvas = document.getElementById('plane');
   const ctx = canvas.getContext('2d');
 
@@ -15,13 +17,18 @@
   const resultsBody = document.getElementById('results-body');
 
   // Проверка попадания точки в область
-  function isInsideRegion(x, y, R) {
+  function isInsideRegion(xRaw, y, R) {
+    const x = new Decimal(xRaw);
+    const Rd = new Decimal(R);
+    const yd = new Decimal(y);
+    const halfR = Rd.div(2);
+
     // Прямоугольник: x in [-R/2, 0], y in [0, R]
-    const inRect = x >= -R / 2 && x <= 0 && y >= 0 && y <= R;
+    const inRect = x.gte(halfR.negated()) && x.lte(0) && yd.gte(0) && yd.lte(Rd);
     // Четверть круга радиуса R/2 в первой четверти (x>=0, y>=0)
-    const inQuarterCircle = x >= 0 && y >= 0 && (x * x + y * y) <= (R / 2) * (R / 2);
+    const inQuarterCircle = x.gte(0) && yd.gte(0) && x.pow(2).plus(yd.pow(2)).lte(halfR.pow(2));
     // Треугольник с вершинами (0,0), (R,0), (0,-R): x>=0, y<=0, x - y <= R
-    const inTriangle = x >= 0 && y <= 0 && (x - y) <= R;
+    const inTriangle = x.gte(0) && yd.lte(0) && x.minus(yd).lte(Rd);
     return inRect || inQuarterCircle || inTriangle;
   }
 
@@ -126,10 +133,9 @@
       ctx.fillText(m.label, cx + 6, pt[1] + 4);
     });
 
-    // Точки, проверенные пользователем (для текущего R)
     points.forEach(function (pt) {
       if (Number(pt.r) !== Number(R)) return;
-      const px = toPx(pt.x, pt.y);
+      const px = toPx(parseFloat(pt.x), pt.y);
       ctx.beginPath();
       ctx.arc(px[0], px[1], 4, 0, Math.PI * 2);
       ctx.fillStyle = pt.hit ? '#1e7e34' : '#c0392b';
@@ -154,8 +160,7 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
   }
 
-  // Форматирование даты/времени строго в русской локализации
-  // с учётом текущего часового пояса устройства (пересчитывается из ISO/UTC при каждом отображении)
+  // Форматирование даты в русской локализации с учётом текущего часового пояса устройства
   function formatDateTime(isoString) {
     const date = new Date(isoString);
     return new Intl.DateTimeFormat('ru-RU', {
@@ -205,8 +210,16 @@
     xError.textContent = '';
 
     const xRaw = xInput.value.trim().replace(',', '.');
-    const xVal = Number(xRaw);
-    if (xRaw === '' || Number.isNaN(xVal) || xVal < -3 || xVal > 3) {
+    let xOk = xRaw !== '';
+    if (xOk) {
+      try {
+        const xDec = new Decimal(xRaw);
+        xOk = xDec.gte(-3) && xDec.lte(3);
+      } catch (e) {
+        xOk = false;
+      }
+    }
+    if (!xOk) {
       xInput.classList.add('invalid');
       xError.textContent = 'X должен быть числом от -3 до 3';
       valid = false;
@@ -222,7 +235,7 @@
     return valid;
   }
 
-  // Блокировка недопустимого ввода прямо во время набора текста в поле X:
+  // Блокировка недопустимого ввода во время набора текста в поле X:
   // можно только цифры, минус в начале и одну точку/запятую
   xInput.addEventListener('input', function () {
     let v = xInput.value;
@@ -240,14 +253,14 @@
     e.preventDefault();
     if (!validate()) return;
 
-    const x = Number(xInput.value.trim().replace(',', '.'));
+    const xRaw = xInput.value.trim().replace(',', '.');
     const y = Number(yInput.value);
     const R = Number(getSelectedR());
-    const hit = isInsideRegion(x, y, R);
+    const hit = isInsideRegion(xRaw, y, R);
 
     const results = loadResults();
     results.push({
-      x: x,
+      x: xRaw,
       y: y,
       r: R,
       hit: hit,
@@ -259,7 +272,7 @@
     drawScene(R, results);
   });
 
-  // Перерисовка при смене R (без отправки формы)
+  // Перерисовка при смене R
   rInputs.forEach(function (el) {
     el.addEventListener('change', function () {
       const R = Number(getSelectedR());
@@ -267,7 +280,6 @@
     });
   });
 
-  // Инициализация
   const initialResults = loadResults();
   renderResults(initialResults);
   drawScene(Number(getSelectedR()) || 1, initialResults);
