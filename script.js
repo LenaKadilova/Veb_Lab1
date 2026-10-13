@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    const STORAGE_KEY = 'lab1_variant12727_results';
+    const storK = 'labka1_variant12727_results';
     Decimal.set({precision: 100});
 
     const canvas = document.getElementById('plane');
@@ -155,7 +155,7 @@
 
     function loadResults() {
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
+            const raw = localStorage.getItem(storK);
             return raw ? JSON.parse(raw) : [];
         } catch (e) {
             return [];
@@ -163,7 +163,7 @@
     }
 
     function saveResults(results) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(results));
+        localStorage.setItem(stoK, JSON.stringify(results));
     }
 
     function formatDateTime(isoString) {
