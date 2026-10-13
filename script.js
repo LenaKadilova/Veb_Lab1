@@ -182,17 +182,13 @@
         resultsBody.innerHTML = '';
         results.forEach(function (r) {
             const tr = document.createElement('tr');
-            const tdX = document.createElement('td');
-            tdX.textContent = r.x;
-            const tdY = document.createElement('td');
-            tdY.textContent = r.y;
-            const tdR = document.createElement('td');
-            tdR.textContent = r.r;
+            const tdX = document.createElement('td'); tdX.textContent = r.x;
+            const tdY = document.createElement('td'); tdY.textContent = r.y;
+            const tdR = document.createElement('td'); tdR.textContent = r.r;
             const tdHit = document.createElement('td');
             tdHit.textContent = r.hit ? 'Попадание' : 'Мимо';
             tdHit.className = r.hit ? 'hit-yes' : 'hit-no';
-            const tdDate = document.createElement('td');
-            tdDate.textContent = formatDateTime(r.timestamp);
+            const tdDate = document.createElement('td'); tdDate.textContent = formatDateTime(r.timestamp);
 
             tr.appendChild(tdX);
             tr.appendChild(tdY);
