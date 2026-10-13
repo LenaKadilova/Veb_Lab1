@@ -12,17 +12,25 @@
         }
 
         #header {
+            width: 100%;
+            border-spacing: 0;
             background: #ffffff;
             border: 1px solid #d0d3d8;
             border-radius: 4px;
             padding: 14px 18px;
             margin-bottom: 16px;
+            font-family: Georgia, 'Times New Roman', serif;
             color: #1a3a5c;
             font-size: 16px;
         }
 
-        #header > .header-row {
-            margin: 2px 0;
+        #header > tbody > tr > .header-row {
+            padding: 2px 0;
+        }
+
+        #header > tbody > tr > .header-row::before {
+            content: "— ";
+            color: #8a94a3;
         }
 
         h1 {
@@ -41,9 +49,14 @@
         }
 
         .panel {
+            width: 100%;
+            border-spacing: 0;
             background: #ffffff;
             border: 1px solid #d0d3d8;
             border-radius: 4px;
+        }
+
+        .panel > tbody > tr > td {
             padding: 14px;
         }
 
@@ -53,12 +66,16 @@
             display: block;
         }
 
-        .field-row {
-            margin: 8px 0;
+        .form-table {
+            border-spacing: 0;
         }
 
-        .field-row > label {
-            display: inline-block;
+        .form-table > tbody > tr > td {
+            padding: 4px 0;
+            vertical-align: middle;
+        }
+
+        .form-table .label-cell {
             width: 130px;
             font-weight: bold;
         }
@@ -84,8 +101,8 @@
         .error-text {
             color: #c0392b;
             font-size: 12px;
-            min-height: 16px;
-            margin-left: 134px;
+            height: 16px;
+            padding-left: 4px;
         }
 
         button {
@@ -168,7 +185,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        p class="section-title">Область (вариант 12727)</p>
+                        <p class="section-title">Область (вариант 12727)</p>
                         <canvas id="plane" width="400" height="400"></canvas>
                     </td>
                 </tr>
@@ -182,7 +199,7 @@
                     <td>
                         <p class="section-title">Проверка точки</p>
                         <form id="point-form" novalidate>
-                            <table class="form table">
+                            <table class="form-table">
                                 <tbody>
                                 <tr>
                                     <td class="label-cell"><label for="x-input">X (от -3 до 3):</label></td>
@@ -213,10 +230,6 @@
                                     <td class="error-text" id="y-error"></td>
                                 </tr>
                                 <tr>
-                                    <td></td>
-                                    <td class="error-text" id="y-error"></td>
-                                </tr>
-                                <tr>
                                     <td class="label-cell">R:</td>
                                     <td class="radio-group" id="r-input">
                                         <label><input type="radio" name="r" value="1" checked>1</label>
@@ -239,9 +252,10 @@
                     </td>
                 </tr>
                 </tbody>
+            </table>
 
-            <tbody class="panel" style="margin-top:14px;">
-                <tr>
+            <table class="panel" style="margin-top:14px;">
+                <tbody>
                 <tr>
                     <td>
                         <p class="section-title">Результаты проверок</p>
