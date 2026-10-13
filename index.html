@@ -8,9 +8,7 @@
         body {
             font-family: Arial, Helvetica, sans-serif;
             color: #222222;
-            background: #f5f6f8;
-            margin: 0;
-            padding: 20px;
+            background: #f4f5f7;
         }
 
         #header {
@@ -19,7 +17,6 @@
             border-radius: 4px;
             padding: 14px 18px;
             margin-bottom: 16px;
-            font-family: Georgia, 'Times New Roman', serif;
             color: #1a3a5c;
             font-size: 16px;
         }
@@ -28,13 +25,7 @@
             margin: 2px 0;
         }
 
-        #header > .header-row::before {
-            content: "— ";
-            color: #8a94a3;
-        }
-
         h1 {
-            font-family: Georgia, 'Times New Roman', serif;
             font-size: 20px;
             margin: 0 0 10px 0;
         }
@@ -144,7 +135,6 @@
         }
 
         .section-title {
-            font-family: Georgia, 'Times New Roman', serif;
             font-size: 15px;
             margin: 0 0 10px 0;
             color: #1a3a5c;
@@ -153,80 +143,125 @@
 </head>
 <body>
 
-<div id="header">
-    <h1>Лабораторная работа №1</h1>
-    <div class="header-row">Студент: Кадилова Елена Владимировна</div>
-    <div class="header-row">Группа: Веб-пр (P3215) 1.10</div>
-    <div class="header-row">Вариант: 12727</div>
-</div>
+<table id="header">
+    <tbody>
+    <tr>
+        <td><h1>Лабораторная работа №1</h1></td>
+    </tr>
+    <tr>
+        <td class="header-row">Студент: Кадилова Елена Владимировна</td>
+    </tr>
+    <tr>
+        <td class="header-row">Группа: Веб-пр (P3215) 1.8</td>
+    </tr>
+    <tr>
+        <td class="header-row">Вариант: 12727</td>
+    </tr>
+    </tbody>
+</table>
 
 <table id="layout">
     <tbody>
     <tr>
         <td style="width:420px;">
-            <div class="panel">
-                <p class="section-title">Область (вариант 12727)</p>
-                <canvas id="plane" width="400" height="400"></canvas>
-            </div>
+            <table class="panel">
+                <tbody>
+                <tr>
+                    <td>
+                        p class="section-title">Область (вариант 12727)</p>
+                        <canvas id="plane" width="400" height="400"></canvas>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </td>
         <td>
-            <div class="panel">
-                <p class="section-title">Проверка точки</p>
-                <form id="point-form" novalidate>
-                    <div class="field-row">
-                        <label for="x-input">X (от -3 до 3):</label>
-                        <input type="text" id="x-input" name="x" placeholder="например, 1.5">
-                    </div>
-                    <div class="error-text" id="x-error"></div>
+            <table class="panel">
+                <tbody>
+                <tr>
+                    <td>
+                        <p class="section-title">Проверка точки</p>
+                        <form id="point-form" novalidate>
+                            <table class="form table">
+                                <tbody>
+                                <tr>
+                                    <td class="label-cell"><label for="x-input">X (от -3 до 3):</label></td>
+                                    <td><input type="text" id="x-input" name="x" placeholder="например, 1.5"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="x-error"></td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell"><label for="y-input">Y:</label></td>
+                                    <td>
+                                        <select id="y-input" name="y">
+                                            <option value="-4">-4</option>
+                                            <option value="-3">-3</option>
+                                            <option value="-2">-2</option>
+                                            <option value="-1">-1</option>
+                                            <option value="0" selected>0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="y-error"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="y-error"></td>
+                                </tr>
+                                <tr>
+                                    <td class="label-cell">R:</td>
+                                    <td class="radio-group" id="r-input">
+                                        <label><input type="radio" name="r" value="1" checked>1</label>
+                                        <label><input type="radio" name="r" value="2">2</label>
+                                        <label><input type="radio" name="r" value="3">3</label>
+                                        <label><input type="radio" name="r" value="4">4</label>
+                                        <label><input type="radio" name="r" value="5">5</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="error-text" id="r-error"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><button type="submit">Проверить</button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
 
-                    <div class="field-row">
-                        <label for="y-input">Y:</label>
-                        <select id="y-input" name="y">
-                            <option value="-4">-4</option>
-                            <option value="-3">-3</option>
-                            <option value="-2">-2</option>
-                            <option value="-1">-1</option>
-                            <option value="0" selected>0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </div>
-                    <div class="error-text" id="y-error"></div>
-
-                    <div class="field-row">
-                        <label>R:</label>
-                        <span class="radio-group" id="r-input">
-                  <label><input type="radio" name="r" value="1" checked>1</label>
-                  <label><input type="radio" name="r" value="2">2</label>
-                  <label><input type="radio" name="r" value="3">3</label>
-                  <label><input type="radio" name="r" value="4">4</label>
-                  <label><input type="radio" name="r" value="5">5</label>
-                </span>
-                    </div>
-                    <div class="error-text" id="r-error"></div>
-
-                    <button type="submit">Проверить</button>
-                </form>
-            </div>
-
-            <div class="panel" style="margin-top:14px;">
-                <p class="section-title">Результаты проверок</p>
-                <table id="results-table">
-                    <thead>
-                    <tr>
-                        <th>X</th>
-                        <th>Y</th>
-                        <th>R</th>
-                        <th>Результат</th>
-                        <th>Дата и время</th>
-                    </tr>
-                    </thead>
-                    <tbody id="results-body">
-                    </tbody>
-                </table>
-            </div>
+            <tbody class="panel" style="margin-top:14px;">
+                <tr>
+                <tr>
+                    <td>
+                        <p class="section-title">Результаты проверок</p>
+                        <table id="results-table">
+                            <thead>
+                            <tr>
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>R</th>
+                                <th>Результат</th>
+                                <th>Дата и время</th>
+                            </tr>
+                            </thead>
+                            <tbody id="results-body">
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </td>
     </tr>
     </tbody>
